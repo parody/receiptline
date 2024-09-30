@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.16.1] - 2024-04-05
+### Fixed
+- README
+
+### Removed
+- Unnecessary div elements in the designer
+
+## [1.16.0] - 2023-11-15
+### Added
+- Base64 validation for images
+- Support for new headless mode of puppeteer
+- Serial port options
+
+### Changed
+- File extension from .txt to .receipt
+
 ## [1.15.0] - 2023-02-20
 ### Added
 - Print margin
