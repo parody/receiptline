@@ -191,7 +191,7 @@ const rasterize = async (receiptmd, printer, encoding) => {
         const svg = receiptline.transform(receiptmd, display);
         const w = Number(svg.match(/width="(\d+)px"/)[1]);
         const h = Number(svg.match(/height="(\d+)px"/)[1]);
-        const browser = await puppeteer.launch({ defaultViewport: { width: w, height: h }});
+        const browser = await puppeteer.launch({ defaultViewport: { width: w, height: h }, headless: 'new' });
         const page = await browser.newPage();
         await page.setContent(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>*{margin:0;background:transparent}</style></head><body>${svg}</body></html>`);
         const png = await page.screenshot({ encoding: encoding, omitBackground: true });
@@ -218,9 +218,7 @@ const svgsharp = Object.assign({}, receiptline.commands.svg, {
             const q = w * this.textScale;
             const r = (p + q / 2) * this.charWidth / this.textScale;
             p += q;
-            const s = w * this.charWidth / 2;
-            const t = attr.replace('scale(1,2)', `translate(${s}),scale(1,2)`).replace('scale(2,1)', `translate(${-s}),scale(2,1)`);
-            return a + `<text x="${r}"${t}>${c.replace(/[ &<>]/g, r => ({' ': '&#xa0;', '&': '&amp;', '<': '&lt;', '>': '&gt;'}[r]))}</text>`;
+            return a + `<text x="${r}"${attr}>${c.replace(/[ &<>]/g, r => ({' ': '&#xa0;', '&': '&amp;', '<': '&lt;', '>': '&gt;'}[r]))}</text>`;
         }, '');
         this.textPosition += this.measureText(text, encoding) * this.textScale;
         return '';

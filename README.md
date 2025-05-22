@@ -5,9 +5,12 @@ Generate receipt printer commands and images.
 
 |Package|Type|For|Description|
 |---|---|---|---|
-|[ReceiptLine](https://www.npmjs.com/package/receiptline)|SDK|Developers|Receipt description language processor|
-|[ReceiptIO](https://www.npmjs.com/package/receiptio)|Console App|Users|Print, Convert, Printer status|
+|[ReceiptLine](https://www.npmjs.com/package/receiptline)|SDK for **Node.js**|Developers|Receipt description language processor|
+|[ReceiptIO](https://www.npmjs.com/package/receiptio)|Node.js Console App|Users|Print, Convert, Printer status|
 |[Designer](https://receiptline.github.io/designer/)|Tool|All|Edit, Preview|
+|[Receipt Markdown](https://marketplace.visualstudio.com/items?itemName=receiptline.receipt-markdown)|VS Code Extension|All|Edit, Preview|
+|[Receipt.js](https://github.com/receiptline/receiptjs)|SDK for **JavaScript**|Developers|Receipt description language processor<br>Print, Convert, Printer status|
+|[Receipt.js Designer](https://receiptline.github.io/receiptjs-designer/)|Tool|All|Edit, Preview, **Print**|
 
 "ReceiptLine" is a coined word from "Receipt" and "Streamline".  
 Make it more efficient by making it simpler!  
@@ -163,7 +166,7 @@ const svg = receiptline.transform(doc, display);
 const fs = require('fs');
 const receiptline = require('receiptline');
 
-const source = fs.createReadStream('example.txt');
+const source = fs.createReadStream('example.receipt');
 const transform = receiptline.createTransform({ command: 'svg' });
 const destination = fs.createWriteStream('example.svg');
 
@@ -214,7 +217,7 @@ Customize the command object to output your own commands.
 ### lib/receiptline.js
 
 JavaScript ES2015(ES6) version. It works on both web browser and Node.js.  
-To output printer commands on a web browser, use Browserify.  
+To output printer commands on a web browser, use [Receipt.js](https://github.com/receiptline/receiptjs) or Browserify.  
 
 ```bash
 $ browserify -o receiptline-full.js receiptline.js
@@ -353,6 +356,27 @@ The serial-LAN converter enables test printing to USB / Bluetooth printers that 
       - local port
     - `device`
       - the system path of the serial port
+      - `<system path>[:<options>]`
+
+    Serial port options  
+
+    ```json
+        "device": "COM9:9600,N,8,1"
+    ```
+    - `<options>`
+      - `<baud rate>,<parity>,<data bits>,<stop bits>[,<flow control>]`
+      - default: `9600,N,8,1,N`
+      - commas can be omitted
+    - `<baud rate>`
+      - `2400`, `4800`, `9600`, `19200`, `38400`, `57600`, `115200`
+    - `<parity>`
+      - `N`: none, `E`: even, `O`: odd
+    - `<data bits>`
+      - `8`, `7`
+    - `<stop bits>`
+      - `1`, `2`
+    - `<flow control>`
+      - `N`: none, `R`: rts/cts, `X`: xon/xoff
 
 1. Restart the server
 
